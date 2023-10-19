@@ -1,21 +1,32 @@
 #!/usr/bin/env python3
 
 import serial
+import serial.tools.list_ports
 from pprint import pprint
 from PyInquirer import prompt, Separator
 from examples import custom_style_2
+
+
+
+def get_available_ports():
+    ports = list(serial.tools.list_ports.comports())
+    return [port.device for port in ports]
+
+
+available_ports = get_available_ports()
+
 
 questions = [
     {
         'type': 'list',
         'name': 'port',
         'message': 'Select Port',
-        'choices': ['/dev/ttyAMA0', '/dev/ttyS0']
+        'choices': available_ports
     },
     {
         'type': 'list',
         'name': 'baudrate',
-        'message': 'Select Baudrate',
+        'message': 'Select Baudrate',   
         'choices': ['9600', '57600', '115200']
     },
     {
